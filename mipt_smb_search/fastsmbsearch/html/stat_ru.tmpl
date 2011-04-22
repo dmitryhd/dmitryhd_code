@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="KOI8-R"?>
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US">
+<head>
+<meta http-equiv="Refresh" content="240"/>
+<link rel="stylesheet" href="/style.css"/>
+<style type="text/css">
+	a { color: #000000 }
+	a:hover { color: #000000 }
+</style>
+<title>Fast SMB Search: Статистика сети</title>
+</head>
+<body>
+<h1>Статистика сети</h1>
+<form action="stat.pl" method="get">
+<p>Отобразить информацию о ресурсах следующего типа:
+<select name="restype">
+<tmpl_loop name="res_type">
+<option value="<tmpl_var name="opt_value">"<tmpl_if name="opt_selected"> selected="selected"</tmpl_if>><tmpl_var name="opt_name"></option>
+</tmpl_loop>
+</select>
+<br/><br/>
+<input type="checkbox" name="onlyonline" <tmpl_if name="only_online">checked="checked"</tmpl_if> />
+Только включенные компьютеры
+<input type="submit" name="refresh" value="Display"/>
+</p>
+</form>
+<hr/>
+<table border="1" cellpadding="5" cellspacing="0">
+<tmpl_loop name="host_loop">
+<tr>
+<td><tmpl_var name="counter">.</td>
+<td><tt>[<tmpl_var name="prefix">]</tt> <a href="<tmpl_var name="href">">
+<tmpl_if name="bold"><b><tmpl_var name="name"></b>
+<tmpl_else>
+<tmpl_var name="name">
+</tmpl_if>
+</a>
+(<tmpl_var name="proto">)
+</td>
+<td align="right"><tmpl_var name="size"></td>
+<td><span class="<tmpl_var name="stat_style">"><tmpl_var name="status"></span></td>
+</tr>
+</tmpl_loop>
+</table>
+<p><a id="total">Всего</a>: <b><tmpl_var name="total_hosts"></b> компьютеров, общий размер: <b><tmpl_var name="total_size"></b><br/><br/>
+Это статистика сети. Показан общий объем расшаренных (по SMB) файлов.<br />
+</p><p class="smalltext">Этот отчет был сгенерирован <tmpl_var name="gen_date"><br/>
+Эту страницу посетили <b><tmpl_var name="page_counter"></b> раз.</p>
+<p class="smalltext"><tmpl_var name="about_info"></p>
+</body></html>

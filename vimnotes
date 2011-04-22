@@ -1,0 +1,133 @@
+jump forward ctrl-j, double click
+jump back ctrl-o
+
+
+moving
+ right 	- 0, nonblank ^
+ left 	- $
+ middle of the screen gm
+ to the first occurence of "c" char - fc 'Fc - left'
+|T|	N  T{char}	till before the Nth occurrence of {char} to the left
+|;|	N  ;		repeat the last "f", "F", "t", or "T" N times
+, - op dir
+
+|w|	N  w		N words forward
+|W|	N  W		N blank-separated |WORD|s forward
+|e|	N  e		forward to the end of the Nth word
+|)|	N  )		N sentences forward
+|}|	N  }		N paragraphs forward
+|]]|	N  ]]		N sections forward, at start of section
+|][|	N  ][		N sections forward, at end of section
+|[(|	N  [(		N times back to unclosed '('
+
+|?|	N  ?{pattern}[?[offset]]<CR>
+			search backward for the Nth occurrence of {pattern}
+|N|	N  N		repeat last search, in opposite direction
+|star|	N  *		search forward for the identifier under the cursor
+|#|	N  #		search backward for the identifier under the cursor
+|gstar|	N  g*		like "*", but also find partial matches
+|gd|	   gd		goto local declaration of identifier under the cursor
+|gD|	   gD		goto global declaration of identifier under the cursor
+
+|m|	   m{a-zA-Z}	mark current position with mark {a-zA-Z}
+|`a|	   `{a-z}	go to mark {a-z} within current file
+|``|	   ``		go to the position before the last jump
+|`0|	   `{0-9}	go to the position where Vim was previously exited
+|`quote|   `"		go to the position when last editing this file
+|`[|	   `[		go to the start of the previously operated or put text
+|`.|	   `.		go to the position of the last change in this file
+|CTRL-O|  N  CTRL-O	go to Nth older position in jump list
+|CTRL-I|  N  CTRL-I	go to Nth newer position in jump list
+|%|	   %		find the next brace, bracket, comment, or "#if"/
+|CTRL-F|	N  CTRL-F	window N pages Forwards (downwards)
+|CTRL-B|	N  CTRL-B	window N pages Backwards (upwards)
+|z<CR>|		   z<CR> or zt	redraw, current line at top of window
+|z.|		   z.	 or zz	redraw, current line at center of window
+|z-|		   z-	 or zb	redraw, current line at bottom of window
+
+|a|	N  a	append text after the cursor (N times)
+|A|	N  A	append text at the end of the line (N times)
+|i|	N  i	insert text before the cursor (N times) (also: <Insert>)
+|I|	N  I	insert text before the first non-blank in the line (N times)
+|i_CTRL-E|	CTRL-E		  insert the character from below the cursor
+|i_CTRL-Y|	CTRL-Y		  insert the character from above the cursor
+|i_CTRL-R|	CTRL-R {0-9a-z%#:.-="}  insert the contents of a register
+|:r|	   :r [file]	   insert the contents of [file] below the cursor
+|:r!|	   :r! {command}   insert the standard output of {command} below the
+|CTRL-A|  N  CTRL-A	add N to the number at or after the cursor
+|CTRL-X|  N  CTRL-X	subtract N from the number at or after the cursor
+
+|D|	N  D		delete to the end of the line (and N-1 more lines)
+	(change = delete text and enter Insert mode)
+|c|	  N  c{motion}	change the text that is moved over with {motion}
+|v_c|	     {visual}c	change the highlighted text
+|cc|	  N  cc		change N lines
+|S|	  N  S		change N lines
+|C|	  N  C		change to the end of the line (and N-1 more lines)
+
+*Q_cm*		Copying and moving text
+
+|quote|	  "{char}	use register {char} for the next delete, yank, or put
+|:reg|	  :reg		show the contents of all registers
+|:reg|	  :reg {arg}	show the contents of registers mentioned in {arg}
+|p|	  N  p		put a register after the cursor position (N times)
+|P|	  N  P		put a register before the cursor position (N times)
+|:le|	  :[range]le[ft] [indent]
+|=|	   N  ={motion}
+			filter the lines that are moved over through 'equalprg'
+			left-align the lines in [range] (with [indent])
+|:ri|	  :[range]ri[ght] [width]
+			right-align the lines in [range]
+
+
+
+
+|:s|	   :[range]s[ubstitute]/{pattern}/{string}/[g][c]
+|&|	      &		Repeat previous ":s" on current line without options
+
+
+|.|	   N  .		repeat last change (with count replaced with N)
+|q|	      q{a-z}	record typed characters into register {a-z}
+|q|	      q		stop recording
+|@|	   N  @{a-z}	execute the contents of register {a-z} (N times)
+|@@|	   N  @@	   repeat previous @{a-z} (N times)
+			substitute {pattern} by {string} in [range] lines;
+			   with [g], replace all occurrences of {pattern};
+			   with [c], confirm each replacement
+
+|:mksession| :mks[ession][!] [file]
+				  like ":mkvimrc", but store current files,
+				     windows, etc. too, to be able to continue
+				     this session later.
+				  like ":mkvimrc", but store current files,
+				     windows, etc. too, to be able to continue
+				     this session later.
+|:abbreviate|	:ab[breviate] {lhs} {rhs}  add abbreviation for {lhs} to {rhs}
+
+|CTRL-R|  N  CTRL-R	redo last N undone changes
+|U|	     U		restore last changed line
+|K|		   K		lookup keyword under the cursor with
+
+|:cc|		:cc [nr]	display error [nr] (default is the same again)
+|:cnext|	:cn		display the next error
+|:cprevious|	:cp		display the previous error
+|:clist|	:cl		list all errors
+|:cfile|	:cf		read errors from the file 'errorfile'
+|:make|		:make [args]	start make, read errors, and jump to first
+				   error
+|:cd-|	   :cd -		Back to previous current directory.
+|:args|	   :ar[gs]		Print the argument list, with the current file
+				   in "[]".
+|:all|	   :all  or :sall	Open a window for every file in the arg list.
+|:wn|	   :wn[ext][!]		Write file and edit next file.
+|:next|	     :n[ext]		  :sn[ext]		Edit next file
+|:next_f|    :n[ext] {arglist}	  :sn[ext] {arglist}	define new arg list
+							   and edit first file
+|:Next|	     :N[ext]		  :sN[ext]		Edit previous file
+|:first|     :fir[st]		  :sfir[st]		Edit first file
+|:last|	     :la[st]		  :sla[st]		Edit last file
+|CTRL-W_=|	CTRL-W =		Make all windows equal height
+|CTRL-W_-|	CTRL-W -		Decrease current window height
+|CTRL-W_+|	CTRL-W +		Increase current window height
+|CTRL-W__|	CTRL-W _		Set current window height (default:
+|:syn-on|	:syntax on		start using syntax highlighting

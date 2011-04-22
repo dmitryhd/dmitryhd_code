@@ -1,0 +1,60 @@
+fprintf(stderr,"can't open file %s\n",strerror(errno));
+
+if the program receives a signal
+while blocked in one of these calls, the call will return without completing the opera-
+tion. In this case, errno is set to EINTR.
+
+ar - linked file
+gcc -c = object files
+gcc -o reciprocal main.o reciprocal.o = linking
+gcc -o app app.o -L. –ltest = with def. val
+gcc -o test_main link_test.o -L. -ltest with ar. libtest.a
+
+Shared libs:
+gcc -c -fPIC test.c = "we'll use this like part of shared lib"
+gcc -shared -fPIC -o libtest.so test1.o test2.o
+gcc -o app app.o -L. –ltest
+"the linker chooses the shared library version"
+You can use the -static option to demand static
+archives. For example, the following line will use the libtest.a archive, even if the
+libtest.so shared library is also available:
+   % gcc -static -o app app.o -L. –ltest
+The ldd command displays the shared libraries that are linked into an executable.
+use the -Wl,-rpath option when linking the
+program. Suppose that you use this:
+   % gcc -o app app.o -L. -ltest -Wl,-rpath,/usr/local/lib
+You could
+open a shared library named libtest.so by calling dlopen like this:
+  dlopen (“libtest.so”, RTLD_LAZY)
+
+(The second parameter is a flag that indicates how to bind symbols in the shared
+library.You can consult the online man pages for dlopen if you want more informa-
+tion, but RTLD_LAZY is usually the setting that you want.) To use dynamic loading func-
+tions, include the <dlfcn.h> header file and link with the –ldl option to pick up the
+libdl library.
+The dlsym system call can also be used to obtain a pointer to a static variable in the
+shared library
+The dlclose function unloads the shared library.
+Technically, dlopen actually loads
+the library only if it is not already loaded. If the library has already been loaded
+dlopen simply increments the library reference count. Similarly, dlclose decrements
+the reference count and then unloads the library only if the reference count has
+reached zero.
+============================================================================================
+getpid
+getppid
+system()
+Linux provides one function, fork, that makes a child process that is an exact  
+copy of its parent process. Linux provides another set of functions, the exec family, that
+causes a particular process to cease being an instance of one program and to instead
+become an instance of another program.To spawn a new process, you first use fork to
+make a copy of the current process.Then you use exec to transform one of these
+processes into an instance of the program you want to spawn.
+
+
+    The sigaction function can be used to set a signal disposition.The first parameter
+is the signal number.The next two parameters are pointers to sigaction structures; the
+first of these contains the desired disposition for that signal number, while the second
+receives the previous disposition.
+
+* memset

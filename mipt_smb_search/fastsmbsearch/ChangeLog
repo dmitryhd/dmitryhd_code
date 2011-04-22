@@ -1,0 +1,34 @@
+0.3.2 - Implemented word hashing and indexing. Got speedup of 8.5 times.
+- Added initial support for localization
+- Persistend database connection
+- Migrated to Apache 2.0, mod_perl 2.0
+- Use autoconf/automake to generate Makefile.
+- Written Installation Guide and Internals.
+- Extended FAQ
+- Successful compilation by Intel C++ Compiler
+- Added internal memory accounting.
+- Rewritten a SMBGate in Perl. Many issues were solved.
+- Support for partial download in SMBGate.
+- A lot of bugfixes
+
+0.3.1 - Implemented long-awaited 'full path traverse'
+- A large code cleanup
+- Rewritten CGI scripts in Perl instead of PHP.
+- Rewritten HTML output scripts for work without warnings (perl -w).
+- Use HTML templates for separate data and text.
+- Added script for taking host info from DNS servers
+- Fixed bug with files which are more than 4 Gb size.
+- Fixed bug with long share names
+- Moved into SVN repositary
+- Started FAQ
+- A lot of bugfixes
+
+0.3 - The data size gradually become too large. SQL was too slow. Written fsearch
+server in C++ from scratch. Got speedup of 10-15 times.
+- Backported back to Linux.
+- Use patched version of smbclient instead of parsing its output in perl.
+
+0.2 - Rewritten scanner from scratch for work under Windows.
+
+0.1 - Initial version for Linux. Buried in ages....
+- Uses SQL for storing all files data.

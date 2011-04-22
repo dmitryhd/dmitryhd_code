@@ -1,0 +1,17 @@
+body { text-align: left; font-family: Tahoma; font-size: 12px }
+td { font-family: Tahoma; font-size: 12px }
+select { font-family: Tahoma; font-size: 12px }
+input { font-family: Tahoma; font-size: 12px }
+a.empty { color: #000000; text-decoration: none }
+a.empty:hover { color: #000000; text-decoration: none }
+p.largetext { font-size: 17px }
+p.smalltext { font-size: 11px }
+p.centeralign { text-align: center }
+p.warning { background-color: yellow }
+span.plusonefont { font-size: 15px }
+span.largetext { font-size: 17px }
+span.online { font-weight: bold; color: green }
+span.error { font-weight: bold; color: #f0d000 }
+span.unchecked { font-weight: bold; color: green }
+span.offline { font-weight: bold; color: red }
+span.red { color: red; font-weight: bold }

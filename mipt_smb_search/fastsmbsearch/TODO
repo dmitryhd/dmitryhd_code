@@ -1,0 +1,71 @@
+   What TO DO?
+   ===========
+
+1) Don't require Samba source for scanner build. The only way we could
+acheive it is to use libsmbclient. However, libsmbclient lacks of
+ability to specify both IP and hostname. Without this we can't properly
+scan network. May be patch for libsmbclient should be developed,
+integrated into Samba upstream (need contact with Samba developers).
+Does anybody have any other ideas, how to get rid of patching smbclient
+source?
+
+2) Support for other OS, including FreeBSD, Windows, MacOS, Solaris,
+etc. Support for other compilers (icc, msvc, etc).
+
+3) Simple installation. It is very complex now. It requires admin with
+UNIX skills. It must be simple like standard "./configure; make; make
+install" procedure. Makefile.am, configure.in and similar files should
+be rewritten.
+
+4) Normal configuration. Remove all hardcodec parameters and put them
+into DB or config files.
+
+5) FTP support. Currently smbsearch may support ftp, but this feature
+is disabled due to troubles gave to system. Every LIST command
+requires DTP-connection, huge value of connections per second may
+cause slow and unstable work. RFC 959 states that command STAT gives
+session statistics by default and directory listing like LIST but in
+the same connection when it called with directory name as
+parameter. Many ftp-servers, e.g. Serv-U, avoid this standard. Serv-U
+supports non-standard (FEATure) and buggy realized command SITE INDEX
+that works closely like STAT, but it cause temporary server down for
+random(?) time on most systems. Some servers such as BulletProof
+haven't any no-DTP listing commands. No-DTP version of this scanner
+are available that supports at least vsftpd, proftpd, ms ftp
+server. No-DTP scanner works faster.
+
+6) Parallelized scanning. More than one host may be scanned simultaneously.
+In my network rescan script really works all time and sometimes I see too
+many unchecked hosts.
+
+7) Normal installation guide (in English). People with good
+English are required.
+
+8) Localization. Some initial i18n things has already done (such as dividing
+source into Perl code and HTML templates). But is not complete. All
+pages should be translated, more language should be supported.
+
+9) All network segments and their params may be stored in table like follow:
+
+(seg_id int,
+ wkg_id int,
+ segaddr char(18),
+ ... others ...)
+
+We may support different ways for scaning segments: looking in DNS or ping
+hosts using nmap. Every segment may have own method for updating and purging
+hosts, detecting hostnames etc. Our network doesn't support broadcast then 
+nmblookup method cannot work.
+
+10) Some hosts may have more than one IP-address, e.g. when they connected to
+different networks. Maybe use this fact to avoid multiply scanning and
+doubles in stats page?
+
+11) Create library for C (or Perl, Python, ...) to access search server
+directly via socket.
+
+The search core improvements:
+
+1) Search optimization
+2) Reduce memory consumption
+3) Unstrict matching

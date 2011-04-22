@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="koi8-r"?>
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r" />
+<title>SMB Gate FAQ</title>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<h1>SMB Gate</h1>
+
+<div><b>Q</b>. Что такое SMB Gate?</div>
+<p><b>A</b>. <b>SMB Gate</b> - односторонний шлюз между SMB и HTTP. Он позволяет использовать ресурсы сети на основе
+протокола SMB (обычная виндовая сеть) если у вас есть доступ туда только по HTTP. Скрипт достает по SMB запрашиваемый
+вами файл и высылает вам его по HTTP.</p>
+
+<div><b>Q</b>. Как использовать SMB Gate?</div>
+<p><b>A</b>. Формат строки запроса следующий: <b>http://lorien/smb/&lt; host &gt;/&lt; share &gt;/&lt; file &gt;</b>
+где </p>
+<ul>
+<li>http://lorien/smb/ - местонахождение шлюза.</li>
+<li>&lt;host&gt; - имя машины в сетевом окружении</li>
+<li>&lt;share&gt; - имя расшаренного ресурса</li>
+<li>&lt;file&gt; - имя нужного файла</li>
+</ul>
+<p>
+Также можно посмотреть список файлов в каталоге. Например, зайдите на
+<a href="/smb/lorien/video">http://lorien/smb/lorien/video</a>.
+Для более полноценной навигации по сети используйте <a href="/">Fast SMB Search</a> (для быстрого попадания в нужный каталог
+служит кнопка <i>View this directory in Fast SMB Search</i> внизу страницы).<br />
+Если вы используете Microsoft Internet Explorer, не забудьте выключить режим <b>Always send URL as UTF-8</b>.</p>
+	
+<hr />
+<p>
+<b>SMB Gate</b> is written by Sasha, write to <a href="mailto:shurvod@mail.ru">shurvod@mail.ru</a>
+</p>
+</body></html>

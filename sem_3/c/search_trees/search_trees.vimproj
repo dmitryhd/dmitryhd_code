@@ -1,0 +1,270 @@
+let SessionLoad = 1
+if &cp | set nocp | endif
+let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
+let v:this_session=expand("<sfile>:p")
+silent only
+cd ~/c/search_trees
+if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
+  let s:wipebuf = bufnr('%')
+endif
+set shortmess=aoO
+badd +38 ~/c/IV_TERM/1st/tree.h
+badd +1 ~/c/thmin/rabin_karp_algorithm
+badd +1 ~/.gvimrc
+badd +1 ~/sem_3/mycp/backup.c
+badd +1 ~/c/thmin/rabin_karp_algorithm.c
+badd +4 ~/c/IV_TERM/1st/tree_sample.c
+badd +126 ~/c/IV_TERM/1st/tree_impl.c
+badd +1 ~/c/IV_TERM/1st/MakeFile
+badd +1 ~/.vimrc
+badd +1 ~/1.c
+badd +1 /boot/grub/menu.lst
+badd +1 ~/sem_3/sigusr_ex.sh
+badd +1 ~/.FBReader/books.xml
+badd +1 ~/c/IV_TERM/1st/tree_impl.o
+badd +1 ~/c/IV_TERM/1st/Makefile
+badd +1 ~/notes.txt
+badd +43 ~/tech_notes.txt
+badd +16 ~/c/IV_TERM/1st/tz.txt
+badd +6 ~/vimtips
+badd +1 ~/c/IV_TERM/1st/test.c
+badd +1 ~/c/IV_TERM/1st/test.h
+badd +119 ~/c/IV_TERM/1st/rb_tree.c
+badd +35 ~/c/IV_TERM/1st/binary_tree.c
+badd +6 ~/c/IV_TERM/1st/readme.txt
+badd +1 ~/tree.h
+badd +1 ~/tree_sample.c
+badd +1 ~/tree_impl.c
+badd +1 ~/MakeFile
+badd +1 ~/tree_impl.o
+badd +1 ~/Makefile
+badd +1 ~/tz.txt
+badd +1 ~/test.c
+badd +1 ~/test.h
+badd +1 ~/rb_tree.c
+badd +1 ~/binary_tree.c
+badd +1 test.h
+badd +1 tree.h
+badd +1 binary_tree.c
+badd +1 rb_tree.c
+badd +1 test.c
+badd +1 tree_sample.c
+badd +1 Makefile
+badd +1 readme.txt
+silent! argdel *
+edit test.h
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 1 - ((0 * winheight(0) + 24) / 48)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+1
+normal! 0
+lcd ~/c/search_trees
+tabedit ~/c/search_trees/tree.h
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 1 - ((0 * winheight(0) + 24) / 48)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+1
+normal! 0
+lcd ~/c/search_trees
+tabedit ~/c/search_trees/binary_tree.c
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 1 - ((0 * winheight(0) + 24) / 48)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+1
+normal! 0
+lcd ~/c/search_trees
+tabedit ~/c/search_trees/rb_tree.c
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 1 - ((0 * winheight(0) + 24) / 48)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+1
+normal! 0
+lcd ~/c/search_trees
+tabedit ~/c/search_trees/test.c
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 1 - ((0 * winheight(0) + 24) / 48)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+1
+normal! 0
+lcd ~/c/search_trees
+tabedit ~/c/search_trees/tree_sample.c
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 1 - ((0 * winheight(0) + 24) / 48)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+1
+normal! 0
+lcd ~/c/search_trees
+tabedit ~/c/search_trees/Makefile
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 1 - ((0 * winheight(0) + 24) / 48)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+1
+normal! 0
+lcd ~/c/search_trees
+tabedit ~/c/search_trees/readme.txt
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 1 - ((0 * winheight(0) + 24) / 48)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+1
+normal! 0
+lcd ~/c/search_trees
+tabnew
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+enew
+file ~/c/search_trees
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+lcd ~/c/search_trees
+tabnext 9
+if exists('s:wipebuf')
+  silent exe 'bwipe ' . s:wipebuf
+endif
+unlet! s:wipebuf
+set winheight=1 winwidth=20 shortmess=filnxtToO
+let s:sx = expand("<sfile>:p:r")."x.vim"
+if file_readable(s:sx)
+  exe "source " . s:sx
+endif
+let &so = s:so_save | let &siso = s:siso_save
+doautoall SessionLoadPost
+unlet SessionLoad
+" vim: set ft=vim :

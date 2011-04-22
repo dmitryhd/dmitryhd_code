@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="KOI8-R"?>
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US">
+<head>
+<meta http-equiv="Refresh" content="240"/>
+<link rel="stylesheet" type="text/css" href="/style.css"/>
+<title>Fast SMB Search: List of workgroups</title>
+</head>
+<body>
+<div>All workgroups in network:</div>
+<hr/>
+<table cellpadding="5" cellspacing="0">
+<tmpl_loop name="wkg_loop">
+<tr><td><b><tmpl_var name="cnt"></b></td><td>[<tt><tmpl_var name="prefix"></tt>] <a href="<tmpl_var name="href">"><tmpl_var name="name"></a></td><td align="right"><tmpl_var name="count"> hosts</td><td align="right"><tmpl_var name="share"></td></tr>
+</tmpl_loop>
+</table>
+<hr/>
+<p>
+Total: <b><tmpl_var name="wkg_count"></b> workgroups<br/>
+Last network scan was at <b><tmpl_var name="last_scan"></b>.
+Last network ping was at <b><tmpl_var name="last_ping"></b>.
+</p></body></html>

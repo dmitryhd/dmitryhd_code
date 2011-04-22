@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="KOI8-R"?>
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+<head>
+<title>Fast SMB Search: <tmpl_var name="what"></title>
+<link rel="stylesheet" type="text/css" href="/style.css" />
+</head><body><script type="text/javascript">
+function do_advanced()
+{
+	f = document.getElementById('searchform');
+	if (f.what.value) {
+		f.action = 'advanced.pl';
+		f.submit();
+		return false;
+	} else {
+		return true;
+	}
+}
+</script>
+<table cellpadding="0">
+<tr>
+<td align="center" valign="top">
+<table cellpadding="5">
+<tr><td>
+<a class="empty" href="/index.pl"><span class="largetext"><span class="red">Fast</span> SMB Search</span></a>&nbsp;&nbsp;
+</td></tr>
+</table>
+</td>
+<td>
+<form id="searchform" action="fastsearch.pl" method="get">
+<table cellpadding="5">
+<tr>
+<td colspan="2">
+<input type="text" name="what" size="40" value="<tmpl_var name="what">" />&nbsp;
+<input type="hidden" name="files_per_page" value="<tmpl_var name="files_per_page">" />
+</td>
+<td>
+<input type="submit" name="go" value="Искать" />
+</td></tr>
+<tr>
+<td>
+<input type="checkbox" name="use_base" value="1" />
+искать в найденном </td>
+<td><select name="restype">
+<tmpl_loop name="res_type">
+<option value="<tmpl_var name="opt_value">"<tmpl_if name="opt_selected"> selected="selected"</tmpl_if>><tmpl_var name="opt_name"></option>
+</tmpl_loop>
+</select>
+</td><td align="right">
+<a href="advanced.pl?what=<tmpl_var name="what">" onclick="return do_advanced();">Расширенный поиск</a><br />
+<input type="hidden" name="show" value="<tmpl_var name="show">" />
+<input type="hidden" name="req_status" value="<tmpl_var name="req_status">" />
+<input type="hidden" name="invrestype" value="<tmpl_var name="invrestype">" />
+<input type="hidden" name="pathmatch" value="<tmpl_var name="pathmatch">" />
+<input type="hidden" name="sort" value="<tmpl_var name="sort">" />
+<input type="hidden" name="sort2" value="<tmpl_var name="sort2">" />
+<input type="hidden" name="sort3" value="<tmpl_var name="sort3">" />
+<input type="hidden" name="inv_sort" value="<tmpl_var name="inv_sort">" />
+<input type="hidden" name="inv_sort2" value="<tmpl_var name="inv_sort2">" />
+<input type="hidden" name="inv_sort3" value="<tmpl_var name="inv_sort3">" />
+<input type="hidden" name="unstrict" value="<tmpl_var name="unstrict">" />
+<input type="hidden" name="base_query_host" value="<tmpl_var name="base_query_host">" />
+<input type="hidden" name="base_query_file" value="<tmpl_var name="base_query_file">" />
+</td></tr>
+</table>
+</form></td>
+</tr></table>
+<div>Результаты поиска <b><tmpl_var name="what"></b>: найдено <b><tmpl_var name="matches"></b> файлов<tmpl_if name="not_all"> (показаны <b><tmpl_var name="start"></b> - <b><tmpl_var name="end"></b>)</tmpl_if>.</div>
+<hr />
+
+<table cellpadding="5" cellspacing="0">
+<tmpl_loop name="file_loop">
+<tr>
+<td><tmpl_var name="cnt">.</td>
+<td><tmpl_var name="dir"></td>
+<td align="right"><b><tmpl_var name="size"></b></td>
+<td><span class="<tmpl_var name="stat_style">"><tmpl_var name="status"></span></td>
+<td>[<tmpl_var name="prefix">]</td>
+<td><a href="<tmpl_var name="path_url">"><tmpl_var name="disp_path"></a><tmpl_var name="separator"><a href="<tmpl_var name="file_url">"><tmpl_var name="name"></a></td>
+</tr>
+</tmpl_loop>
+</table>
+<hr />
+<p>Всего: <b><tmpl_var name="matches"></b> файлов, общий размер показанных файлов (включая подкаталоги): <b><tmpl_var name="total_size"></b>.
+Время обработки запроса: <b><tmpl_var name="proc_time"></b> сек (время поиска на сервер: <b><tmpl_var name="search_time"></b> сек).</p>
+<tmpl_if name="has_more_pages">
+<p class="centeralign">
+	<span class="plusonefont">Страница <b><tmpl_var name="cur_page"></b> из <b><tmpl_var name="num_pages"></b>:
+<tmpl_loop name="page_loop">
+<tmpl_if name="is_current"><b><tmpl_var name="num"></b><tmpl_else><a href="<tmpl_var name="url">"><tmpl_var name="num"></a>&nbsp;</tmpl_if>
+</tmpl_loop>
+</span></p>
+</tmpl_if>
+<p class="smalltext">
+Этот отчет был сгенерирован <tmpl_var name="gen_date"><br />
+Эту страницу посетили <b><tmpl_var name="page_counter"></b> раз.</p>
+<p class="smalltext"><tmpl_var name="about_info"></p>
+</body></html>

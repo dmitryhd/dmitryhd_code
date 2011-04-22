@@ -1,0 +1,5 @@
+#!/bin/bash
+#mount -t vfat /dev/sdb1 /mnt/flash/ -o iocharset=utf8, codepage=866
+mount /mnt/flash
+echo "mount flash"
+nautilus --no-desktop /mnt/flash

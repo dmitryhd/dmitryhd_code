@@ -1,0 +1,30 @@
+inf - Андрей Владимирович
+apenzin@yandex.ru
+---------------------------
+tasks:
+myecho +
+myid + 
+myenv + 
+
+getpid +
+fork_ex +
+fifo +
+pipe_other_prog - (dup2)
+
+z1 +
+z2 +?
+z3 +?
+quine +  
+treads -
+
+#13 (pipemax) +
+
+семафоры + + + 
+
+mycp -  
+
+* передать сообщения при помощи сигналов.
+* обработать sigpipe
+
+машины (мониторы Хора)
+контра - 16 ()

@@ -1,0 +1,222 @@
+%{
+/* This file is part of Fast SMB Search
+ *
+ * Copyright 2001-2005   Alexander Vodomerov
+ *
+ * $Id: qlang.ypp,v 1.9 2005/09/11 12:36:36 shurikz Exp $
+ *
+ * Fast SMB Search is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * Fast SMB Search is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ */
+
+#include <list>
+#include <cstdio>
+#include <cstdlib>
+#include "record.h"
+#include "test.h"
+#include "substr.h"
+#include "memalloc.h"
+#include "regexp.h"
+#include "stdtest.h"
+#include "testoper.h"
+#include "cachingtest.h"
+#include "stdhost.h"
+#include "parenttest.h"
+#include "cacheitem.h"
+#include "statefilter.h"
+#include "stdcmpr.h" 
+
+int yylex(void);
+bool zz_parse(const char *string, CHintedTest *test, CHostTest **hosttest);
+
+void yyerror(char *s);
+
+extern void zz_prepare_parsing(const char *string, CSimpleAllocator* allocator);
+extern void zz_finish_parsing();
+
+static CHintedTest result_test;
+static CHostTest *result_host_test;
+static std::list<CItemCompareFunc*> *result_compare_funcs;
+static int success = 0;
+static CSimpleAllocator *xx_allocator = 0;
+
+struct TestListItem
+{
+	CHintedTest test;
+	TestListItem *next;
+
+	std::vector<CRecordTest *> get_test_list() 
+	{
+		std::vector<CRecordTest *> res;
+		TestListItem *p = this;
+		while (p) {
+			res.push_back(p->test.test());
+			p = p->next;
+		}
+		return res;
+	}
+
+	std::vector<CFileHinter *> get_hint_list() 
+	{
+		std::vector<CFileHinter *> res;
+		TestListItem *p = this;
+		while (p) {
+			res.push_back(p->test.hinter());
+			p = p->next;
+		}
+		return res;
+	}
+
+	
+	void* operator new(size_t size) { return xx_allocator->alloc(size); }
+	void operator delete(void *mem, size_t size) { }
+};
+
+
+%}
+
+%union {
+	long long m_integer;			/* integer value */
+	char *m_string;			/* string */
+	CHintedTest m_test;		/* file test */
+	CHostTest *m_host_test;		/* host test */
+	CItemCompareFunc *m_compare;	/* sort order */
+	struct TestListItem *m_test_list;	/* linked list of tests */
+};
+
+%token <m_integer> INTEGER
+%token <m_string> STRING
+%token <m_test> TEST
+%token PARENT ANYPARENT PATHMATCH
+%token TRUE FALSE
+%token FILE_ID PARENT_ID ISDIR RES_TYPE MINSIZE MAXSIZE HAS_RES_TYPE
+%token SUBSTR ERRSTR REGEXP
+
+%token ALL HOST_ID ONLINE WKG PROTO
+
+%token SORTORDER
+%token REVERSE
+%token HOSTPRIO HOSTSTATUS HOSTWKG HOSTNAME
+%token FILESIZE FILEDIR FILENAME FILENAMECASE FILEPATH
+
+%type <m_integer> query
+%type <m_test> test stdtest
+%type <m_host_test> hosttest stdhosttest
+%type <m_compare> basesortorder simplesortorder sortorder
+%type <m_test_list> testlist
+
+%left OR
+%left AND
+%nonassoc NOT
+
+%%
+
+query:
+	hosttest test	{ success = 1; result_host_test = $1; result_test = $2; }
+	| hosttest test SORTORDER sortorder	{ success = 1; result_host_test = $1; result_test = $2; }
+	;
+
+hosttest:
+	stdhosttest	{ $$ = $1; }
+	| hosttest OR hosttest	{ $$ = new COrTest<CHostData, CHostSet>($1, $3); }
+	| hosttest AND hosttest	{ $$ = new CAndTest<CHostData, CHostSet>($1, $3); }
+	| NOT hosttest	{ $$ = new CNotTest<CHostData, CHostSet>($2); }
+	| '(' hosttest ')'	{ $$ = $2; }
+	;
+
+test:
+       	stdtest		{ $$ = $1; }
+	| test OR test	{ $$ = $1 || $3; }
+	| test AND test	{ $$ = $1 && $3; }
+	| NOT test	{ $$ = ! $2; }
+	| '(' test ')'	{ $$ = $2; }
+	| PARENT '(' test ')' { $$ = CHintedTest::ctor_no_hint(new CParentTest(new CCachingTest<CFileRecord, CFileSet>($3.test())), $3.hinter()); }
+	| ANYPARENT '(' test ')' { $$ = CHintedTest::ctor_no_hint(new CParentTest(new CCachingTest<CFileRecord, CFileSet>(new CPathTest($3.test()))), $3.hinter()); }
+	| PATHMATCH '(' testlist ')' { $$ = CHintedTest::ctor(new CPathMatchFilter<CBitAndStateFilter>(new CBitAndStateFilter($3->get_test_list())), new CMultiOrHinter<CHint, CFileSet>($3->get_hint_list())); }
+	;
+
+testlist:
+	test		{ $$ = new TestListItem; $$->next = NULL; $$->test = $1; }
+	| testlist ',' test { $$ = new TestListItem; $$->next = $1; $$->test = $3; }
+	;
+
+stdtest:
+	SUBSTR STRING	{ $$ = CHintedTest::ctor(new CBoyerMooreTest($2), new CBMSubstringHinter($2)); }
+	| ERRSTR '(' STRING ',' INTEGER ')'	{ $$ = CHintedTest::ctor(new CShiftAndTest($3, $5), new CSASubstringHinter($3, $5)); }
+	| FILE_ID INTEGER { $$ = new CFileIdTest($2); }
+	| PARENT_ID INTEGER { $$ = new CParentIdTest($2); }
+	| ISDIR INTEGER { $$ = new CDirTest($2); }
+	| MINSIZE INTEGER { $$ = new CMinSizeTest($2); }
+	| MAXSIZE INTEGER { $$ = new CMaxSizeTest($2); }
+	| RES_TYPE INTEGER { $$ = new CResTypeTest($2); }
+	| HAS_RES_TYPE { $$ = new CNonNullResTypeTest(); }
+	| REGEXP STRING { $$ = new CRegexpTest($2); }
+	| TRUE { $$ = new CTrueTest<CFileRecord, CFileSet>(); }
+	| FALSE { $$ = new CFalseTest<CFileRecord, CFileSet>(); }
+	;
+
+stdhosttest:
+	ALL		{ $$ = new CHostTrueTest(); }
+	| ONLINE	{ $$ = new CHostOnlineTest(); }
+	| HOST_ID INTEGER	{ $$ = new CHostIDTest($2); }
+	| WKG INTEGER	{ $$ = new CHostWkgTest($2); }
+	| PROTO INTEGER	{ $$ = new CHostProtoTest($2); }
+	;
+
+sortorder:
+	simplesortorder	{ result_compare_funcs->push_back($1); }
+	| sortorder ',' simplesortorder	{ result_compare_funcs->push_back($3); }
+	;
+
+simplesortorder:
+	basesortorder { $$ = $1; }
+	| basesortorder REVERSE { $$ = $1; $$->reverse = true; }
+	;
+
+basesortorder:
+	HOSTPRIO	{ $$ = new CCompareHostPriority(); }
+	| HOSTSTATUS	{ $$ = new CCompareHostStatus(); }
+	| HOSTWKG	{ $$ = new CCompareHostWkg(); }
+	| HOSTNAME	{ $$ = new CCompareHostName(); }
+	| FILESIZE	{ $$ = new CCompareFileSize(); }
+	| FILEDIR	{ $$ = new CCompareFileDir(); }
+	| FILENAME	{ $$ = new CCompareFileName(); }
+	| FILENAMECASE	{ $$ = new CCompareFileNameCase(); }
+	| FILEPATH	{ $$ = new CCompareFilePath(); }
+	;
+
+%%
+
+bool zz_parse(const char *string, CSimpleAllocator *allocator, CHintedTest *test, CHostTest **host_test, std::list<CItemCompareFunc*> *compare)
+{
+	success = 0;
+	
+	*test = 0;
+	*host_test = 0;
+	result_compare_funcs = compare;
+	result_compare_funcs->clear();
+	zz_prepare_parsing(string, allocator);
+	xx_allocator = allocator;
+	yyparse();
+	if (!success) {
+		result_compare_funcs->clear();
+		return false;
+	}
+	xx_allocator = 0;
+	zz_finish_parsing();
+	*test = result_test;
+	*host_test = result_host_test;
+	return true;
+}

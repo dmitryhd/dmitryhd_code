@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="KOI8-R"?>
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US">
+<head>
+	<title>Fast SMB Search</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=koi8-r" />
+	<link rel="stylesheet" type="text/css" href="/style.css" />
+</head>
+<body>
+<h1><span class="red">Fast</span> SMB Search</h1>
+<p>Enter one or more words, separated by space.</p>
+<form id="searchform" action="fastsearch.pl" method="get">
+<table cellpadding="5">
+<tr>
+<td><input id="what" type="text" name="what" size="40" /></td>
+<td><input type="submit" name="go" value="Fast Search" /></td>
+<td>Search in: &nbsp;
+<select name="restype">
+<option value="all" selected="selected">All files</option>
+<option value="film">Films</option>
+<option value="clip">Clips</option>
+<option value="music">Music</option>
+<option value="doc">Documents</option>
+<option value="picture">Pictures</option>
+<option value="unix">Unix files</option>
+<option value="cdimage">CD Images</option>
+<option value="archive">Archives</option>
+<option value="winexe">Win exe</option>
+<option value="dir">Dirs</option>
+</select>
+</td>
+</tr>
+</table>
+<input type="checkbox" name="pathmatch" value="1" />allow path traverse
+<input type="checkbox" name="status" value="online" />online only
+</form>
+<script type="text/javascript">
+document.getElementById('what').focus();
+
+function do_advanced()
+{
+	f = document.getElementById('searchform');
+	if (f.what.value) {
+		f.action = 'advanced.pl';
+		f.submit();
+		return false;
+	} else {
+		return true;
+	}
+}
+</script>
+<p>
+<a href="index.pl?lang=en">[En]</a> <a href="index.pl?lang=ru">[Ru]</a>
+<a href="advanced.pl" onclick="return do_advanced();">Advanced search</a>
+<a href="shownet.pl">List of Workgroups</a>
+<a href="stat.pl">Network statistics</a>
+<a href="serverstat.pl">Server statistics</a>
+</p>
+</body></html>

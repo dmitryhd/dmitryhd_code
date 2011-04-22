@@ -1,0 +1,1062 @@
+Терминалы не используются в грамматике
+
+   TEST
+
+
+Грамматика
+
+    0 $accept: query $end
+
+    1 query: hosttest test
+    2      | hosttest test SORTORDER sortorder
+
+    3 hosttest: stdhosttest
+    4         | hosttest OR hosttest
+    5         | hosttest AND hosttest
+    6         | NOT hosttest
+    7         | '(' hosttest ')'
+
+    8 test: stdtest
+    9     | test OR test
+   10     | test AND test
+   11     | NOT test
+   12     | '(' test ')'
+   13     | PARENT '(' test ')'
+   14     | ANYPARENT '(' test ')'
+   15     | PATHMATCH '(' testlist ')'
+
+   16 testlist: test
+   17         | testlist ',' test
+
+   18 stdtest: SUBSTR STRING
+   19        | ERRSTR '(' STRING ',' INTEGER ')'
+   20        | FILE_ID INTEGER
+   21        | PARENT_ID INTEGER
+   22        | ISDIR INTEGER
+   23        | MINSIZE INTEGER
+   24        | MAXSIZE INTEGER
+   25        | RES_TYPE INTEGER
+   26        | HAS_RES_TYPE
+   27        | REGEXP STRING
+   28        | TRUE
+   29        | FALSE
+
+   30 stdhosttest: ALL
+   31            | ONLINE
+   32            | HOST_ID INTEGER
+   33            | WKG INTEGER
+   34            | PROTO INTEGER
+
+   35 sortorder: simplesortorder
+   36          | sortorder ',' simplesortorder
+
+   37 simplesortorder: basesortorder
+   38                | basesortorder REVERSE
+
+   39 basesortorder: HOSTPRIO
+   40              | HOSTSTATUS
+   41              | HOSTWKG
+   42              | HOSTNAME
+   43              | FILESIZE
+   44              | FILEDIR
+   45              | FILENAME
+   46              | FILENAMECASE
+   47              | FILEPATH
+
+
+Терминальные символы с правилами, в которых они появляются
+
+$end (0) 0
+'(' (40) 7 12 13 14 15 19
+')' (41) 7 12 13 14 15 19
+',' (44) 17 19 36
+error (256)
+INTEGER (258) 19 20 21 22 23 24 25 32 33 34
+STRING (259) 18 19 27
+TEST (260)
+PARENT (261) 13
+ANYPARENT (262) 14
+PATHMATCH (263) 15
+TRUE (264) 28
+FALSE (265) 29
+FILE_ID (266) 20
+PARENT_ID (267) 21
+ISDIR (268) 22
+RES_TYPE (269) 25
+MINSIZE (270) 23
+MAXSIZE (271) 24
+HAS_RES_TYPE (272) 26
+SUBSTR (273) 18
+ERRSTR (274) 19
+REGEXP (275) 27
+ALL (276) 30
+HOST_ID (277) 32
+ONLINE (278) 31
+WKG (279) 33
+PROTO (280) 34
+SORTORDER (281) 2
+REVERSE (282) 38
+HOSTPRIO (283) 39
+HOSTSTATUS (284) 40
+HOSTWKG (285) 41
+HOSTNAME (286) 42
+FILESIZE (287) 43
+FILEDIR (288) 44
+FILENAME (289) 45
+FILENAMECASE (290) 46
+FILEPATH (291) 47
+OR (292) 4 9
+AND (293) 5 10
+NOT (294) 6 11
+
+
+Нетерминальные символы с правилами, в которых они появляются
+
+$accept (43)
+    налево: 0
+query (44)
+    налево: 1 2, направо: 0
+hosttest (45)
+    налево: 3 4 5 6 7, направо: 1 2 4 5 6 7
+test (46)
+    налево: 8 9 10 11 12 13 14 15, направо: 1 2 9 10 11
+    12 13 14 16 17
+testlist (47)
+    налево: 16 17, направо: 15 17
+stdtest (48)
+    налево: 18 19 20 21 22 23 24 25 26 27 28 29, направо:
+    8
+stdhosttest (49)
+    налево: 30 31 32 33 34, направо: 3
+sortorder (50)
+    налево: 35 36, направо: 2 36
+simplesortorder (51)
+    налево: 37 38, направо: 35 36
+basesortorder (52)
+    налево: 39 40 41 42 43 44 45 46 47, направо: 37 38
+
+
+состояние 0
+
+    0 $accept: . query $end
+
+    ALL      сдвиг, и переход в состояние 1
+    HOST_ID  сдвиг, и переход в состояние 2
+    ONLINE   сдвиг, и переход в состояние 3
+    WKG      сдвиг, и переход в состояние 4
+    PROTO    сдвиг, и переход в состояние 5
+    NOT      сдвиг, и переход в состояние 6
+    '('      сдвиг, и переход в состояние 7
+
+    query        переход в состояние 8
+    hosttest     переход в состояние 9
+    stdhosttest  переход в состояние 10
+
+
+состояние 1
+
+   30 stdhosttest: ALL .
+
+    $default  вывод с использованием правила 30 (stdhosttest)
+
+
+состояние 2
+
+   32 stdhosttest: HOST_ID . INTEGER
+
+    INTEGER  сдвиг, и переход в состояние 11
+
+
+состояние 3
+
+   31 stdhosttest: ONLINE .
+
+    $default  вывод с использованием правила 31 (stdhosttest)
+
+
+состояние 4
+
+   33 stdhosttest: WKG . INTEGER
+
+    INTEGER  сдвиг, и переход в состояние 12
+
+
+состояние 5
+
+   34 stdhosttest: PROTO . INTEGER
+
+    INTEGER  сдвиг, и переход в состояние 13
+
+
+состояние 6
+
+    6 hosttest: NOT . hosttest
+
+    ALL      сдвиг, и переход в состояние 1
+    HOST_ID  сдвиг, и переход в состояние 2
+    ONLINE   сдвиг, и переход в состояние 3
+    WKG      сдвиг, и переход в состояние 4
+    PROTO    сдвиг, и переход в состояние 5
+    NOT      сдвиг, и переход в состояние 6
+    '('      сдвиг, и переход в состояние 7
+
+    hosttest     переход в состояние 14
+    stdhosttest  переход в состояние 10
+
+
+состояние 7
+
+    7 hosttest: '(' . hosttest ')'
+
+    ALL      сдвиг, и переход в состояние 1
+    HOST_ID  сдвиг, и переход в состояние 2
+    ONLINE   сдвиг, и переход в состояние 3
+    WKG      сдвиг, и переход в состояние 4
+    PROTO    сдвиг, и переход в состояние 5
+    NOT      сдвиг, и переход в состояние 6
+    '('      сдвиг, и переход в состояние 7
+
+    hosttest     переход в состояние 15
+    stdhosttest  переход в состояние 10
+
+
+состояние 8
+
+    0 $accept: query . $end
+
+    $end  сдвиг, и переход в состояние 16
+
+
+состояние 9
+
+    1 query: hosttest . test
+    2      | hosttest . test SORTORDER sortorder
+    4 hosttest: hosttest . OR hosttest
+    5         | hosttest . AND hosttest
+
+    PARENT        сдвиг, и переход в состояние 17
+    ANYPARENT     сдвиг, и переход в состояние 18
+    PATHMATCH     сдвиг, и переход в состояние 19
+    TRUE          сдвиг, и переход в состояние 20
+    FALSE         сдвиг, и переход в состояние 21
+    FILE_ID       сдвиг, и переход в состояние 22
+    PARENT_ID     сдвиг, и переход в состояние 23
+    ISDIR         сдвиг, и переход в состояние 24
+    RES_TYPE      сдвиг, и переход в состояние 25
+    MINSIZE       сдвиг, и переход в состояние 26
+    MAXSIZE       сдвиг, и переход в состояние 27
+    HAS_RES_TYPE  сдвиг, и переход в состояние 28
+    SUBSTR        сдвиг, и переход в состояние 29
+    ERRSTR        сдвиг, и переход в состояние 30
+    REGEXP        сдвиг, и переход в состояние 31
+    OR            сдвиг, и переход в состояние 32
+    AND           сдвиг, и переход в состояние 33
+    NOT           сдвиг, и переход в состояние 34
+    '('           сдвиг, и переход в состояние 35
+
+    test     переход в состояние 36
+    stdtest  переход в состояние 37
+
+
+состояние 10
+
+    3 hosttest: stdhosttest .
+
+    $default  вывод с использованием правила 3 (hosttest)
+
+
+состояние 11
+
+   32 stdhosttest: HOST_ID INTEGER .
+
+    $default  вывод с использованием правила 32 (stdhosttest)
+
+
+состояние 12
+
+   33 stdhosttest: WKG INTEGER .
+
+    $default  вывод с использованием правила 33 (stdhosttest)
+
+
+состояние 13
+
+   34 stdhosttest: PROTO INTEGER .
+
+    $default  вывод с использованием правила 34 (stdhosttest)
+
+
+состояние 14
+
+    4 hosttest: hosttest . OR hosttest
+    5         | hosttest . AND hosttest
+    6         | NOT hosttest .
+
+    $default  вывод с использованием правила 6 (hosttest)
+
+
+состояние 15
+
+    4 hosttest: hosttest . OR hosttest
+    5         | hosttest . AND hosttest
+    7         | '(' hosttest . ')'
+
+    OR   сдвиг, и переход в состояние 32
+    AND  сдвиг, и переход в состояние 33
+    ')'  сдвиг, и переход в состояние 38
+
+
+состояние 16
+
+    0 $accept: query $end .
+
+    $default  принять
+
+
+состояние 17
+
+   13 test: PARENT . '(' test ')'
+
+    '('  сдвиг, и переход в состояние 39
+
+
+состояние 18
+
+   14 test: ANYPARENT . '(' test ')'
+
+    '('  сдвиг, и переход в состояние 40
+
+
+состояние 19
+
+   15 test: PATHMATCH . '(' testlist ')'
+
+    '('  сдвиг, и переход в состояние 41
+
+
+состояние 20
+
+   28 stdtest: TRUE .
+
+    $default  вывод с использованием правила 28 (stdtest)
+
+
+состояние 21
+
+   29 stdtest: FALSE .
+
+    $default  вывод с использованием правила 29 (stdtest)
+
+
+состояние 22
+
+   20 stdtest: FILE_ID . INTEGER
+
+    INTEGER  сдвиг, и переход в состояние 42
+
+
+состояние 23
+
+   21 stdtest: PARENT_ID . INTEGER
+
+    INTEGER  сдвиг, и переход в состояние 43
+
+
+состояние 24
+
+   22 stdtest: ISDIR . INTEGER
+
+    INTEGER  сдвиг, и переход в состояние 44
+
+
+состояние 25
+
+   25 stdtest: RES_TYPE . INTEGER
+
+    INTEGER  сдвиг, и переход в состояние 45
+
+
+состояние 26
+
+   23 stdtest: MINSIZE . INTEGER
+
+    INTEGER  сдвиг, и переход в состояние 46
+
+
+состояние 27
+
+   24 stdtest: MAXSIZE . INTEGER
+
+    INTEGER  сдвиг, и переход в состояние 47
+
+
+состояние 28
+
+   26 stdtest: HAS_RES_TYPE .
+
+    $default  вывод с использованием правила 26 (stdtest)
+
+
+состояние 29
+
+   18 stdtest: SUBSTR . STRING
+
+    STRING  сдвиг, и переход в состояние 48
+
+
+состояние 30
+
+   19 stdtest: ERRSTR . '(' STRING ',' INTEGER ')'
+
+    '('  сдвиг, и переход в состояние 49
+
+
+состояние 31
+
+   27 stdtest: REGEXP . STRING
+
+    STRING  сдвиг, и переход в состояние 50
+
+
+состояние 32
+
+    4 hosttest: hosttest OR . hosttest
+
+    ALL      сдвиг, и переход в состояние 1
+    HOST_ID  сдвиг, и переход в состояние 2
+    ONLINE   сдвиг, и переход в состояние 3
+    WKG      сдвиг, и переход в состояние 4
+    PROTO    сдвиг, и переход в состояние 5
+    NOT      сдвиг, и переход в состояние 6
+    '('      сдвиг, и переход в состояние 7
+
+    hosttest     переход в состояние 51
+    stdhosttest  переход в состояние 10
+
+
+состояние 33
+
+    5 hosttest: hosttest AND . hosttest
+
+    ALL      сдвиг, и переход в состояние 1
+    HOST_ID  сдвиг, и переход в состояние 2
+    ONLINE   сдвиг, и переход в состояние 3
+    WKG      сдвиг, и переход в состояние 4
+    PROTO    сдвиг, и переход в состояние 5
+    NOT      сдвиг, и переход в состояние 6
+    '('      сдвиг, и переход в состояние 7
+
+    hosttest     переход в состояние 52
+    stdhosttest  переход в состояние 10
+
+
+состояние 34
+
+   11 test: NOT . test
+
+    PARENT        сдвиг, и переход в состояние 17
+    ANYPARENT     сдвиг, и переход в состояние 18
+    PATHMATCH     сдвиг, и переход в состояние 19
+    TRUE          сдвиг, и переход в состояние 20
+    FALSE         сдвиг, и переход в состояние 21
+    FILE_ID       сдвиг, и переход в состояние 22
+    PARENT_ID     сдвиг, и переход в состояние 23
+    ISDIR         сдвиг, и переход в состояние 24
+    RES_TYPE      сдвиг, и переход в состояние 25
+    MINSIZE       сдвиг, и переход в состояние 26
+    MAXSIZE       сдвиг, и переход в состояние 27
+    HAS_RES_TYPE  сдвиг, и переход в состояние 28
+    SUBSTR        сдвиг, и переход в состояние 29
+    ERRSTR        сдвиг, и переход в состояние 30
+    REGEXP        сдвиг, и переход в состояние 31
+    NOT           сдвиг, и переход в состояние 34
+    '('           сдвиг, и переход в состояние 35
+
+    test     переход в состояние 53
+    stdtest  переход в состояние 37
+
+
+состояние 35
+
+   12 test: '(' . test ')'
+
+    PARENT        сдвиг, и переход в состояние 17
+    ANYPARENT     сдвиг, и переход в состояние 18
+    PATHMATCH     сдвиг, и переход в состояние 19
+    TRUE          сдвиг, и переход в состояние 20
+    FALSE         сдвиг, и переход в состояние 21
+    FILE_ID       сдвиг, и переход в состояние 22
+    PARENT_ID     сдвиг, и переход в состояние 23
+    ISDIR         сдвиг, и переход в состояние 24
+    RES_TYPE      сдвиг, и переход в состояние 25
+    MINSIZE       сдвиг, и переход в состояние 26
+    MAXSIZE       сдвиг, и переход в состояние 27
+    HAS_RES_TYPE  сдвиг, и переход в состояние 28
+    SUBSTR        сдвиг, и переход в состояние 29
+    ERRSTR        сдвиг, и переход в состояние 30
+    REGEXP        сдвиг, и переход в состояние 31
+    NOT           сдвиг, и переход в состояние 34
+    '('           сдвиг, и переход в состояние 35
+
+    test     переход в состояние 54
+    stdtest  переход в состояние 37
+
+
+состояние 36
+
+    1 query: hosttest test .
+    2      | hosttest test . SORTORDER sortorder
+    9 test: test . OR test
+   10     | test . AND test
+
+    SORTORDER  сдвиг, и переход в состояние 55
+    OR         сдвиг, и переход в состояние 56
+    AND        сдвиг, и переход в состояние 57
+
+    $default  вывод с использованием правила 1 (query)
+
+
+состояние 37
+
+    8 test: stdtest .
+
+    $default  вывод с использованием правила 8 (test)
+
+
+состояние 38
+
+    7 hosttest: '(' hosttest ')' .
+
+    $default  вывод с использованием правила 7 (hosttest)
+
+
+состояние 39
+
+   13 test: PARENT '(' . test ')'
+
+    PARENT        сдвиг, и переход в состояние 17
+    ANYPARENT     сдвиг, и переход в состояние 18
+    PATHMATCH     сдвиг, и переход в состояние 19
+    TRUE          сдвиг, и переход в состояние 20
+    FALSE         сдвиг, и переход в состояние 21
+    FILE_ID       сдвиг, и переход в состояние 22
+    PARENT_ID     сдвиг, и переход в состояние 23
+    ISDIR         сдвиг, и переход в состояние 24
+    RES_TYPE      сдвиг, и переход в состояние 25
+    MINSIZE       сдвиг, и переход в состояние 26
+    MAXSIZE       сдвиг, и переход в состояние 27
+    HAS_RES_TYPE  сдвиг, и переход в состояние 28
+    SUBSTR        сдвиг, и переход в состояние 29
+    ERRSTR        сдвиг, и переход в состояние 30
+    REGEXP        сдвиг, и переход в состояние 31
+    NOT           сдвиг, и переход в состояние 34
+    '('           сдвиг, и переход в состояние 35
+
+    test     переход в состояние 58
+    stdtest  переход в состояние 37
+
+
+состояние 40
+
+   14 test: ANYPARENT '(' . test ')'
+
+    PARENT        сдвиг, и переход в состояние 17
+    ANYPARENT     сдвиг, и переход в состояние 18
+    PATHMATCH     сдвиг, и переход в состояние 19
+    TRUE          сдвиг, и переход в состояние 20
+    FALSE         сдвиг, и переход в состояние 21
+    FILE_ID       сдвиг, и переход в состояние 22
+    PARENT_ID     сдвиг, и переход в состояние 23
+    ISDIR         сдвиг, и переход в состояние 24
+    RES_TYPE      сдвиг, и переход в состояние 25
+    MINSIZE       сдвиг, и переход в состояние 26
+    MAXSIZE       сдвиг, и переход в состояние 27
+    HAS_RES_TYPE  сдвиг, и переход в состояние 28
+    SUBSTR        сдвиг, и переход в состояние 29
+    ERRSTR        сдвиг, и переход в состояние 30
+    REGEXP        сдвиг, и переход в состояние 31
+    NOT           сдвиг, и переход в состояние 34
+    '('           сдвиг, и переход в состояние 35
+
+    test     переход в состояние 59
+    stdtest  переход в состояние 37
+
+
+состояние 41
+
+   15 test: PATHMATCH '(' . testlist ')'
+
+    PARENT        сдвиг, и переход в состояние 17
+    ANYPARENT     сдвиг, и переход в состояние 18
+    PATHMATCH     сдвиг, и переход в состояние 19
+    TRUE          сдвиг, и переход в состояние 20
+    FALSE         сдвиг, и переход в состояние 21
+    FILE_ID       сдвиг, и переход в состояние 22
+    PARENT_ID     сдвиг, и переход в состояние 23
+    ISDIR         сдвиг, и переход в состояние 24
+    RES_TYPE      сдвиг, и переход в состояние 25
+    MINSIZE       сдвиг, и переход в состояние 26
+    MAXSIZE       сдвиг, и переход в состояние 27
+    HAS_RES_TYPE  сдвиг, и переход в состояние 28
+    SUBSTR        сдвиг, и переход в состояние 29
+    ERRSTR        сдвиг, и переход в состояние 30
+    REGEXP        сдвиг, и переход в состояние 31
+    NOT           сдвиг, и переход в состояние 34
+    '('           сдвиг, и переход в состояние 35
+
+    test      переход в состояние 60
+    testlist  переход в состояние 61
+    stdtest   переход в состояние 37
+
+
+состояние 42
+
+   20 stdtest: FILE_ID INTEGER .
+
+    $default  вывод с использованием правила 20 (stdtest)
+
+
+состояние 43
+
+   21 stdtest: PARENT_ID INTEGER .
+
+    $default  вывод с использованием правила 21 (stdtest)
+
+
+состояние 44
+
+   22 stdtest: ISDIR INTEGER .
+
+    $default  вывод с использованием правила 22 (stdtest)
+
+
+состояние 45
+
+   25 stdtest: RES_TYPE INTEGER .
+
+    $default  вывод с использованием правила 25 (stdtest)
+
+
+состояние 46
+
+   23 stdtest: MINSIZE INTEGER .
+
+    $default  вывод с использованием правила 23 (stdtest)
+
+
+состояние 47
+
+   24 stdtest: MAXSIZE INTEGER .
+
+    $default  вывод с использованием правила 24 (stdtest)
+
+
+состояние 48
+
+   18 stdtest: SUBSTR STRING .
+
+    $default  вывод с использованием правила 18 (stdtest)
+
+
+состояние 49
+
+   19 stdtest: ERRSTR '(' . STRING ',' INTEGER ')'
+
+    STRING  сдвиг, и переход в состояние 62
+
+
+состояние 50
+
+   27 stdtest: REGEXP STRING .
+
+    $default  вывод с использованием правила 27 (stdtest)
+
+
+состояние 51
+
+    4 hosttest: hosttest . OR hosttest
+    4         | hosttest OR hosttest .
+    5         | hosttest . AND hosttest
+
+    AND  сдвиг, и переход в состояние 33
+
+    $default  вывод с использованием правила 4 (hosttest)
+
+
+состояние 52
+
+    4 hosttest: hosttest . OR hosttest
+    5         | hosttest . AND hosttest
+    5         | hosttest AND hosttest .
+
+    $default  вывод с использованием правила 5 (hosttest)
+
+
+состояние 53
+
+    9 test: test . OR test
+   10     | test . AND test
+   11     | NOT test .
+
+    $default  вывод с использованием правила 11 (test)
+
+
+состояние 54
+
+    9 test: test . OR test
+   10     | test . AND test
+   12     | '(' test . ')'
+
+    OR   сдвиг, и переход в состояние 56
+    AND  сдвиг, и переход в состояние 57
+    ')'  сдвиг, и переход в состояние 63
+
+
+состояние 55
+
+    2 query: hosttest test SORTORDER . sortorder
+
+    HOSTPRIO      сдвиг, и переход в состояние 64
+    HOSTSTATUS    сдвиг, и переход в состояние 65
+    HOSTWKG       сдвиг, и переход в состояние 66
+    HOSTNAME      сдвиг, и переход в состояние 67
+    FILESIZE      сдвиг, и переход в состояние 68
+    FILEDIR       сдвиг, и переход в состояние 69
+    FILENAME      сдвиг, и переход в состояние 70
+    FILENAMECASE  сдвиг, и переход в состояние 71
+    FILEPATH      сдвиг, и переход в состояние 72
+
+    sortorder        переход в состояние 73
+    simplesortorder  переход в состояние 74
+    basesortorder    переход в состояние 75
+
+
+состояние 56
+
+    9 test: test OR . test
+
+    PARENT        сдвиг, и переход в состояние 17
+    ANYPARENT     сдвиг, и переход в состояние 18
+    PATHMATCH     сдвиг, и переход в состояние 19
+    TRUE          сдвиг, и переход в состояние 20
+    FALSE         сдвиг, и переход в состояние 21
+    FILE_ID       сдвиг, и переход в состояние 22
+    PARENT_ID     сдвиг, и переход в состояние 23
+    ISDIR         сдвиг, и переход в состояние 24
+    RES_TYPE      сдвиг, и переход в состояние 25
+    MINSIZE       сдвиг, и переход в состояние 26
+    MAXSIZE       сдвиг, и переход в состояние 27
+    HAS_RES_TYPE  сдвиг, и переход в состояние 28
+    SUBSTR        сдвиг, и переход в состояние 29
+    ERRSTR        сдвиг, и переход в состояние 30
+    REGEXP        сдвиг, и переход в состояние 31
+    NOT           сдвиг, и переход в состояние 34
+    '('           сдвиг, и переход в состояние 35
+
+    test     переход в состояние 76
+    stdtest  переход в состояние 37
+
+
+состояние 57
+
+   10 test: test AND . test
+
+    PARENT        сдвиг, и переход в состояние 17
+    ANYPARENT     сдвиг, и переход в состояние 18
+    PATHMATCH     сдвиг, и переход в состояние 19
+    TRUE          сдвиг, и переход в состояние 20
+    FALSE         сдвиг, и переход в состояние 21
+    FILE_ID       сдвиг, и переход в состояние 22
+    PARENT_ID     сдвиг, и переход в состояние 23
+    ISDIR         сдвиг, и переход в состояние 24
+    RES_TYPE      сдвиг, и переход в состояние 25
+    MINSIZE       сдвиг, и переход в состояние 26
+    MAXSIZE       сдвиг, и переход в состояние 27
+    HAS_RES_TYPE  сдвиг, и переход в состояние 28
+    SUBSTR        сдвиг, и переход в состояние 29
+    ERRSTR        сдвиг, и переход в состояние 30
+    REGEXP        сдвиг, и переход в состояние 31
+    NOT           сдвиг, и переход в состояние 34
+    '('           сдвиг, и переход в состояние 35
+
+    test     переход в состояние 77
+    stdtest  переход в состояние 37
+
+
+состояние 58
+
+    9 test: test . OR test
+   10     | test . AND test
+   13     | PARENT '(' test . ')'
+
+    OR   сдвиг, и переход в состояние 56
+    AND  сдвиг, и переход в состояние 57
+    ')'  сдвиг, и переход в состояние 78
+
+
+состояние 59
+
+    9 test: test . OR test
+   10     | test . AND test
+   14     | ANYPARENT '(' test . ')'
+
+    OR   сдвиг, и переход в состояние 56
+    AND  сдвиг, и переход в состояние 57
+    ')'  сдвиг, и переход в состояние 79
+
+
+состояние 60
+
+    9 test: test . OR test
+   10     | test . AND test
+   16 testlist: test .
+
+    OR   сдвиг, и переход в состояние 56
+    AND  сдвиг, и переход в состояние 57
+
+    $default  вывод с использованием правила 16 (testlist)
+
+
+состояние 61
+
+   15 test: PATHMATCH '(' testlist . ')'
+   17 testlist: testlist . ',' test
+
+    ')'  сдвиг, и переход в состояние 80
+    ','  сдвиг, и переход в состояние 81
+
+
+состояние 62
+
+   19 stdtest: ERRSTR '(' STRING . ',' INTEGER ')'
+
+    ','  сдвиг, и переход в состояние 82
+
+
+состояние 63
+
+   12 test: '(' test ')' .
+
+    $default  вывод с использованием правила 12 (test)
+
+
+состояние 64
+
+   39 basesortorder: HOSTPRIO .
+
+    $default  вывод с использованием правила 39 (basesortorder)
+
+
+состояние 65
+
+   40 basesortorder: HOSTSTATUS .
+
+    $default  вывод с использованием правила 40 (basesortorder)
+
+
+состояние 66
+
+   41 basesortorder: HOSTWKG .
+
+    $default  вывод с использованием правила 41 (basesortorder)
+
+
+состояние 67
+
+   42 basesortorder: HOSTNAME .
+
+    $default  вывод с использованием правила 42 (basesortorder)
+
+
+состояние 68
+
+   43 basesortorder: FILESIZE .
+
+    $default  вывод с использованием правила 43 (basesortorder)
+
+
+состояние 69
+
+   44 basesortorder: FILEDIR .
+
+    $default  вывод с использованием правила 44 (basesortorder)
+
+
+состояние 70
+
+   45 basesortorder: FILENAME .
+
+    $default  вывод с использованием правила 45 (basesortorder)
+
+
+состояние 71
+
+   46 basesortorder: FILENAMECASE .
+
+    $default  вывод с использованием правила 46 (basesortorder)
+
+
+состояние 72
+
+   47 basesortorder: FILEPATH .
+
+    $default  вывод с использованием правила 47 (basesortorder)
+
+
+состояние 73
+
+    2 query: hosttest test SORTORDER sortorder .
+   36 sortorder: sortorder . ',' simplesortorder
+
+    ','  сдвиг, и переход в состояние 83
+
+    $default  вывод с использованием правила 2 (query)
+
+
+состояние 74
+
+   35 sortorder: simplesortorder .
+
+    $default  вывод с использованием правила 35 (sortorder)
+
+
+состояние 75
+
+   37 simplesortorder: basesortorder .
+   38                | basesortorder . REVERSE
+
+    REVERSE  сдвиг, и переход в состояние 84
+
+    $default  вывод с использованием правила 37 (simplesortorder)
+
+
+состояние 76
+
+    9 test: test . OR test
+    9     | test OR test .
+   10     | test . AND test
+
+    AND  сдвиг, и переход в состояние 57
+
+    $default  вывод с использованием правила 9 (test)
+
+
+состояние 77
+
+    9 test: test . OR test
+   10     | test . AND test
+   10     | test AND test .
+
+    $default  вывод с использованием правила 10 (test)
+
+
+состояние 78
+
+   13 test: PARENT '(' test ')' .
+
+    $default  вывод с использованием правила 13 (test)
+
+
+состояние 79
+
+   14 test: ANYPARENT '(' test ')' .
+
+    $default  вывод с использованием правила 14 (test)
+
+
+состояние 80
+
+   15 test: PATHMATCH '(' testlist ')' .
+
+    $default  вывод с использованием правила 15 (test)
+
+
+состояние 81
+
+   17 testlist: testlist ',' . test
+
+    PARENT        сдвиг, и переход в состояние 17
+    ANYPARENT     сдвиг, и переход в состояние 18
+    PATHMATCH     сдвиг, и переход в состояние 19
+    TRUE          сдвиг, и переход в состояние 20
+    FALSE         сдвиг, и переход в состояние 21
+    FILE_ID       сдвиг, и переход в состояние 22
+    PARENT_ID     сдвиг, и переход в состояние 23
+    ISDIR         сдвиг, и переход в состояние 24
+    RES_TYPE      сдвиг, и переход в состояние 25
+    MINSIZE       сдвиг, и переход в состояние 26
+    MAXSIZE       сдвиг, и переход в состояние 27
+    HAS_RES_TYPE  сдвиг, и переход в состояние 28
+    SUBSTR        сдвиг, и переход в состояние 29
+    ERRSTR        сдвиг, и переход в состояние 30
+    REGEXP        сдвиг, и переход в состояние 31
+    NOT           сдвиг, и переход в состояние 34
+    '('           сдвиг, и переход в состояние 35
+
+    test     переход в состояние 85
+    stdtest  переход в состояние 37
+
+
+состояние 82
+
+   19 stdtest: ERRSTR '(' STRING ',' . INTEGER ')'
+
+    INTEGER  сдвиг, и переход в состояние 86
+
+
+состояние 83
+
+   36 sortorder: sortorder ',' . simplesortorder
+
+    HOSTPRIO      сдвиг, и переход в состояние 64
+    HOSTSTATUS    сдвиг, и переход в состояние 65
+    HOSTWKG       сдвиг, и переход в состояние 66
+    HOSTNAME      сдвиг, и переход в состояние 67
+    FILESIZE      сдвиг, и переход в состояние 68
+    FILEDIR       сдвиг, и переход в состояние 69
+    FILENAME      сдвиг, и переход в состояние 70
+    FILENAMECASE  сдвиг, и переход в состояние 71
+    FILEPATH      сдвиг, и переход в состояние 72
+
+    simplesortorder  переход в состояние 87
+    basesortorder    переход в состояние 75
+
+
+состояние 84
+
+   38 simplesortorder: basesortorder REVERSE .
+
+    $default  вывод с использованием правила 38 (simplesortorder)
+
+
+состояние 85
+
+    9 test: test . OR test
+   10     | test . AND test
+   17 testlist: testlist ',' test .
+
+    OR   сдвиг, и переход в состояние 56
+    AND  сдвиг, и переход в состояние 57
+
+    $default  вывод с использованием правила 17 (testlist)
+
+
+состояние 86
+
+   19 stdtest: ERRSTR '(' STRING ',' INTEGER . ')'
+
+    ')'  сдвиг, и переход в состояние 88
+
+
+состояние 87
+
+   36 sortorder: sortorder ',' simplesortorder .
+
+    $default  вывод с использованием правила 36 (sortorder)
+
+
+состояние 88
+
+   19 stdtest: ERRSTR '(' STRING ',' INTEGER ')' .
+
+    $default  вывод с использованием правила 19 (stdtest)

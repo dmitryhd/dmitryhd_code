@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="KOI8-R"?>
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+<head>
+	<title>Fast SMB Search</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=koi8-r" />
+	<link rel="stylesheet" type="text/css" href="/style.css" />
+</head>
+<body>
+<h1><span class="red">Fast</span> SMB Search</h1>
+<p>Введите одно или несколько слов, разделенных пробелом.</p>
+<form id="searchform" action="fastsearch.pl" method="get">
+<table cellpadding="5">
+<tr>
+<td><input id="what" type="text" name="what" size="40" /></td>
+<td><input type="submit" name="go" value="Искать" /></td>
+<td>Искать среди: &nbsp;
+<select name="restype">
+<option value="all" selected="selected">Всех файлов</option>
+<option value="film">Фильмов</option>
+<option value="clip">Клипов</option>
+<option value="music">Музыки</option>
+<option value="doc">Документов</option>
+<option value="picture">Картинок</option>
+<option value="unix">Файлов UNIX</option>
+<option value="cdimage">Образов дисков</option>
+<option value="archive">Архивов</option>
+<option value="winexe">Исполнимых</option>
+<option value="dir">Каталоги</option>
+</select>
+</td>
+</tr>
+</table>
+<input type="checkbox" name="pathmatch" value="1" />поиск в полном пути
+<input type="checkbox" name="status" value="online" />только включенные
+</form>
+<script type="text/javascript">
+document.getElementById('what').focus();
+
+function do_advanced()
+{
+	f = document.getElementById('searchform');
+	if (f.what.value) {
+		f.action = 'advanced.pl';
+		f.submit();
+		return false;
+	} else {
+		return true;
+	}
+}
+</script>
+<p>
+<a href="index.pl?lang=en">[En]</a> <a href="index.pl?lang=ru">[Ru]</a>
+<a href="advanced.pl" onclick="return do_advanced();">Расширенный поиск</a>
+<a href="shownet.pl">Список рабочих групп</a>
+<a href="stat.pl">Статистика сети</a>
+<a href="serverstat.pl">Статистика сервера</a>
+</p>
+</body></html>

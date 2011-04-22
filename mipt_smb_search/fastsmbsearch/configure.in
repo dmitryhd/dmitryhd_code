@@ -1,0 +1,32 @@
+# configure.in for SMBSearch
+
+AC_PREREQ(2.53)
+AC_INIT(smbsearch, 0.3.2)
+
+AC_CANONICAL_SYSTEM
+
+OSFLAGS=""
+case $host_os in
+     linux*) OSFLAGS="-DLINUX" ;;
+     freebsd*) OSFLAGS="-DFREEBSD" ;;
+esac
+
+OPTFLAGS=""
+case $host_cpu in
+     *686) OPTFLAGS="-march=i686" ;;
+esac
+
+AM_INIT_AUTOMAKE
+
+CFLAGS=" $CFLAGS $OSFLAGS $OPTFLAGS"
+CXXFLAGS=" $CXXFLAGS $OSFLAGS $OPTFLAGS"
+
+AC_PROG_CXX([g++-3.4 g++34 g++ c++ icpc gpp CC cxx cc++ cl])
+
+AC_HEADER_STDC
+
+AC_CONFIG_FILES(Makefile)
+AC_CONFIG_FILES(fsearch/Makefile)
+
+AC_OUTPUT
+

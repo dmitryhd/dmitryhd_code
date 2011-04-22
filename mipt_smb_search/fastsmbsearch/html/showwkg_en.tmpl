@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="KOI8-R"?>
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US">
+<head>
+<meta http-equiv="Refresh" content="240"/>
+<link rel="stylesheet" type="text/css" href="/style.css"/>
+<title>Fast SMB Search: Computers in <tmpl_var name="wkg_name"></title>
+</head>
+<body>
+<div>Computers in workgroup <b><tmpl_var name="wkg_name"></b>:</div>
+<hr/>
+<div><a href="shownet.pl">Go to top level</a></div>
+<table cellpadding="5" cellspacing="0">
+<tmpl_loop name="host_loop">
+<tr><td><b><tmpl_var name="cnt">.</b></td>
+<td><a href="<tmpl_var name="href">"><tmpl_var name="name"></a> (<tmpl_var name="proto">)</td>
+<td><span class="<tmpl_var name="stat_style">"><tmpl_var name="status"></span></td>
+<td><b><tmpl_var name="ip"></b></td>
+<td align="right"><tmpl_if name="share_count"><tmpl_var name="share_count"> shares</tmpl_if></td>
+<td align="right"><tmpl_if name="size"><tmpl_var name="size"></tmpl_if></td></tr>
+</tmpl_loop>
+</table><hr/><p>Total: <b><tmpl_var name="host_count"></b> computer(s), total size: <b><tmpl_var name="total_size"></b><br/></p></body></html>

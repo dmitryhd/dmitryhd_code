@@ -1,0 +1,1 @@
+plate1 plate1 plate3 exit 

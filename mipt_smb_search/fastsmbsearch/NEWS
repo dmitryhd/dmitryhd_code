@@ -1,0 +1,4 @@
+SMBSearch 0.3.2
+
+Alexander Vodomerov:
+   * Added query hinting. Got speedup of 8-10 times.

@@ -1,0 +1,27 @@
+#!/bin/sh
+
+home_dir=/home/fsearch
+sock_path=/tmp
+fsearch_user=fsearch
+
+case "$1" in
+start)
+        echo Start fsearch server
+        cd ${home_dir}/fsearch
+        su ${fsearch_user} -c "{$home_dir}/fsearch/fsearch &"
+	sleep 1
+        chmod 666 ${sock_path}/fastsmb.sock
+	cd ${home_dir}/scripts
+	su ${fsearch_user} -c "{$home_dir}/scripts/startfsmb.pl &"
+	su ${fsearch_user} -c "rm -f {$home_dir}/scripts/*.lock"
+	su - ${fsearch_user} -c "screen -S rescand -d -m ./rescand.py"
+        ;;
+stop)   
+	cd ${home_dir}/scripts
+	su ${fsearch_user} -c "echo 'QUIT' | ${home_dir}/scripts/fcon.pl &"
+        ;;
+*)
+        echo "usage: ${0##*/} {start|stop}" >&2
+        ;;
+esac
+
