@@ -1,0 +1,22 @@
+# Description:
+# solve equations sin(x0) = 0.6 with precise 0.01
+# and plot e^x0 where x in (0, 10)
+# 22.04.2011, Dmitry Khodakov.
+
+# given values:
+func <- function(x) { sin(x) - 0.6 }
+from_arg <- 0
+to_arg <-10
+precise_arg <- 0.01
+
+x <- seq(from=from_arg, to=to_arg, by=pi/20)
+x <- c(x,to_arg)
+# root:
+x0 <- numeric(0)
+for(i in 1:(length(x)-1))
+  if (func(x[i]) * func(x[i+1]) < 0 )
+    x0 <- c(x0,uniroot(func,lower=x[i],upper=x[i+1], tol=precise_arg)$root)
+  result <-data.frame(x0,exp(x0))
+# plotting:
+  plot(result, pch=15, type="b", lty=2, col=3, lab=c(40,20,2))
+  grid(lty=2, col=8,)
