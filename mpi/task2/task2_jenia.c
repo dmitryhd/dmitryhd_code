@@ -53,6 +53,7 @@ int main(int argc, char** argv){
 		MPI_Finalize();
 		return 0;
 	}
+  printf("T=%f, N=%d\n", T, N);
 
 
 	h = 1.0 / N;
